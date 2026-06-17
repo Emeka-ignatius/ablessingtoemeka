@@ -1,9 +1,9 @@
 {
-  "name": "temp-scaffold",
+  "name": "fusco-x-momo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 1906",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
