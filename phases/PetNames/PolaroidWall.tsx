@@ -96,17 +96,18 @@ export const PolaroidWall = () => {
         const targetPos: [number, number, number] = isMobile ? [0, 0, 0] : card.desktopPos;
         
         return (
-          <PolaroidCard
-            key={i}
-            name={card.name}
-            imageUrl={card.imageUrl}
-            initPos={targetPos}
-            initRot={card.initRot}
-            floatIntensity={card.floatIntensity}
-            floatSpeed={card.floatSpeed}
-            isActive={activeIndex === i}
-            onClick={() => setActiveIndex(prev => prev === i ? null : i)}
-          />
+          <group key={i} scale={isMobile ? 1.8 : 1}>
+            <PolaroidCard
+              name={card.name}
+              imageUrl={card.imageUrl}
+              initPos={targetPos}
+              initRot={card.initRot}
+              floatIntensity={card.floatIntensity}
+              floatSpeed={card.floatSpeed}
+              isActive={activeIndex === i}
+              onClick={() => setActiveIndex(prev => prev === i ? null : i)}
+            />
+          </group>
         );
       })}
     </group>

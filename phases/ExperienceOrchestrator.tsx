@@ -228,6 +228,7 @@ export default function ExperienceOrchestrator() {
                 <div className="text-center mt-12 md:mt-24 pointer-events-auto">
                   <h2 className="font-serif italic text-3xl md:text-4xl mb-2 text-[#7E3E5E]">"All the names I have for you"</h2>
                   <p className="font-sans text-sm tracking-widest uppercase text-space-gold-light">— because one was never enough</p>
+                  <p className="md:hidden mt-8 text-sm font-serif italic text-space-paper/60 animate-pulse">Swipe the image baby 🤍</p>
                 </div>
                 
                 <div className="mt-auto pointer-events-auto">

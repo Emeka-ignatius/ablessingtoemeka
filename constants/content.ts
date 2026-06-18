@@ -123,7 +123,7 @@ Those four years without you were the loudest silence I have ever known. I carri
 
 And then came June 19th.
 
-You sent "Hello" and I didn't even know it was you. But the moment your name came through — One Momo — something that had been held tight inside me for four years just let go. I still can't fully explain that night. I just know I thank God for it every time I think about it. Which is always.
+You sent "Hello" and I didn't even know it was you. But the moment your name came through — Momo — something that had been held tight inside me for four years just let go. I still can't fully explain that night. I just know I thank God for it every time I think about it. Which is always.
 
 This year with you has been the answer to a prayer I had almost stopped praying. You brought peace into my life — real peace, the kind that doesn't need explaining. You let me be myself, fully, without apology. You know everything and you stay. Ugom, do you understand how much that means to me?
 
