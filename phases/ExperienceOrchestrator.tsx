@@ -105,7 +105,7 @@ export default function ExperienceOrchestrator() {
       <div className="absolute inset-0 z-10 flex flex-col justify-between pointer-events-none p-6 md:p-12">
         {/* HUD Top Bar */}
         <div className="w-full flex justify-between items-center pointer-events-auto">
-          <h1 className="font-serif italic text-lg tracking-widest text-space-gold-light">Fusco & Momo</h1>
+          <h1 className="font-serif italic text-lg tracking-widest text-space-gold-light">Josh & Momo</h1>
           {activePhase === 'gate' && (
             <div className="w-48">
               <Progress value={((currentQuestionIndex) / CONFIG.quiz.length) * 100} />
@@ -122,9 +122,10 @@ export default function ExperienceOrchestrator() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center pointer-events-auto"
+                className="text-center grid space-y-3 pointer-events-auto"
               >
-                <p className="font-serif italic text-xl text-space-gold-light mb-6">Momo's Anniversary Journey</p>
+                <p className="font-serif italic text-xl text-space-gold-light mb-6">Momo x Josh Anniversary Journey</p>
+                <span className=' text-red-200'>#ablessingtoemeka</span>
                 <Button onClick={handleUserStart}>Enter the stars</Button>
               </motion.div>
             )}
@@ -138,7 +139,7 @@ export default function ExperienceOrchestrator() {
                 className="text-center max-w-md pointer-events-auto"
               >
                 <h2 className="font-serif italic text-4xl mb-4 tracking-wider text-space-rose">Momo</h2>
-                <p className="text-sm font-sans tracking-widest uppercase text-space-gold-light mb-8">Someone left something here for you.</p>
+                <p className="text-sm font-sans tracking-widest uppercase text-space-gold-light mb-8">Josh left something here for you.</p>
                 <Button onClick={() => setPhase('gate')}>Open it 💕</Button>
               </motion.div>
             )}
@@ -182,11 +183,11 @@ export default function ExperienceOrchestrator() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="text-center max-w-lg pointer-events-auto"
+                            className="text-center pointer-events-auto"
                           >
                             <h2 className="font-serif italic text-4xl md:text-5xl text-space-rose mb-4 ">Happy Anniversary</h2>
                             <p className="font-sans text-xl uppercase tracking-widest text-space-gold-light mb-10">Momo.</p>
-                            <p className="font-sans text-sm uppercase tracking-widest text-space-gold-light mb-10">Let's travel back... 🎞️</p>
+                            <p className="font-sans font-bold text-sm uppercase tracking-widest text-space-gold-light mb-10">Let's travel back... 🎞️</p>
                              <Button 
                               variant="primary" 
                               onClick={() => setPhase('journey')}
@@ -205,18 +206,20 @@ export default function ExperienceOrchestrator() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col justify-between w-full h-full max-h-[80vh] md:max-h-[85vh] pointer-events-none"
               >
-                {/* Story Card — right-aligned on desktop */}
-                <div className="flex-1 flex flex-col justify-center items-center md:items-end w-full md:pr-12">
-                  <div className="bg-space-black/85 border border-white/10 rounded-2xl p-6 md:p-8 max-w-md w-full backdrop-blur-md shadow-2xl pointer-events-auto text-left">
-                    <p className="text-xs uppercase tracking-widest text-space-gold mb-1">{CONFIG.memories[currentSceneIndex].label}</p>
-                    <p className="text-[10px] text-white/50 tracking-wider mb-4">{CONFIG.memories[currentSceneIndex].date}</p>
-                    <h3 className="font-serif italic text-2xl text-space-paper mb-4">{CONFIG.memories[currentSceneIndex].title}</h3>
-                    <p className="text-sm leading-relaxed text-space-paper/80 font-serif whitespace-pre-line">{CONFIG.memories[currentSceneIndex].story}</p>
+                {/* Story Card — mobile: bottom, transparent, centered | desktop: right, dark box, left-aligned */}
+                <div className="flex-1 flex flex-col justify-end md:justify-center items-center md:items-end w-full md:pr-12 pb-4 md:pb-0">
+                  <div className="bg-transparent md:bg-space-black/85 border-none md:border-solid md:border-white/10 md:rounded-2xl p-6 md:p-8 max-w-md w-full md:backdrop-blur-md md:shadow-2xl pointer-events-auto text-center md:text-left mt-auto md:mt-0">
+                    <p className="hidden md:block text-xs uppercase tracking-widest text-space-gold mb-1">{CONFIG.memories[currentSceneIndex].label}</p>
+                    <p className="hidden md:block text-[10px] text-white/50 tracking-wider mb-4">{CONFIG.memories[currentSceneIndex].date}</p>
+                    
+                    <h3 className="font-serif text-3xl md:text-2xl font-bold md:italic md:font-normal text-space-gold md:text-space-paper mb-4">{CONFIG.memories[currentSceneIndex].title}</h3>
+                    
+                    <p className="text-base md:text-sm leading-relaxed text-space-paper/80 font-serif whitespace-pre-line overflow-y-auto max-h-[35vh] md:max-h-none">{CONFIG.memories[currentSceneIndex].story}</p>
                   </div>
                 </div>
 
-                {/* Navigation Buttons — bottom-right on desktop */}
-                <div className="flex gap-4 mt-6 pointer-events-auto w-full justify-center md:justify-end md:pr-12 pb-4">
+                {/* Navigation Buttons */}
+                <div className="flex gap-4 mt-2 md:mt-6 pointer-events-auto w-full justify-center md:justify-end md:pr-12 pb-8 md:pb-4">
                   {currentSceneIndex > 0 && (
                     <Button variant="outline" onClick={prevScene}>Back</Button>
                   )}

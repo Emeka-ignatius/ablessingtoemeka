@@ -22,7 +22,8 @@ export const PolaroidCard = ({
   // Fix stretching: "cover" the photo area maintaining aspect ratio
   useMemo(() => {
     if (texture.image) {
-      const imgAspect = texture.image.width / texture.image.height;
+      const img = texture.image as any;
+      const imgAspect = img.width / img.height;
       const planeAspect = 1; // square photo area (3.8 x 3.8)
 
       texture.wrapS = THREE.ClampToEdgeWrapping;

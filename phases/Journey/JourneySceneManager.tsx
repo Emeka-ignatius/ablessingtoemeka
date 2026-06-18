@@ -10,8 +10,8 @@ export const JourneySceneManager = () => {
 
   // Shift left on desktop, shift up on mobile to prevent overlapping with HTML UI
   const positionX = isMobile ? 0 : -2.4;
-  const positionY = isMobile ? 1.6 : 0;
-  const scale = isMobile ? 0.85 : 1.15;
+  const positionY = isMobile ? 2.8 : 0;
+  const scale = isMobile ? 0.75 : 1.15;
 
   return (
     <group>
