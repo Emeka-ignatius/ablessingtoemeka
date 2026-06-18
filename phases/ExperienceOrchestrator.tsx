@@ -122,7 +122,7 @@ export default function ExperienceOrchestrator() {
       <div className="absolute inset-0 z-10 flex flex-col justify-between pointer-events-none p-6 md:p-12">
         {/* HUD Top Bar */}
         <div className="w-full flex justify-between items-center pointer-events-auto">
-          <h1 className="font-serif italic text-lg tracking-widest text-space-gold-light">Josh & Momo</h1>
+          <h1 className="font-serif italic text-lg tracking-widest text-space-gold-light">Momo & Josh</h1>
           {activePhase === 'gate' && (
             <div className="w-48">
               <Progress value={((currentQuestionIndex) / CONFIG.quiz.length) * 100} />

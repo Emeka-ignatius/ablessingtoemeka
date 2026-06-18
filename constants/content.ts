@@ -93,7 +93,7 @@ export const CONFIG = {
     },
     {
       label: "THE RETURN",
-      date: "June 19, 2025",
+      date: "June 19, 2025, 10:45PM",
       title: "Good Evening. EMEKA?",
       story: `I was in my room that night. I'd just ended something that had been slowly costing me my peace — tired, drained, done. So I let it go. And then my phone buzzed. An unknown number. Good evening. I replied. And then came one word that stopped everything: Emeka? Something in my chest moved. Yes please — who is asking? And then: Momo 😂😂. I typed WHATTTT!!! because there were no real words for what I felt. But then she said something that broke me open completely — she'd been searching through my Facebook profile for my number since the week before. She wasn't just texting me that night. She had been looking for me. She was already on her way back. I just didn't know it yet.`,
       imageUrl: "/images/first-message.png",
@@ -121,7 +121,7 @@ What 2017 felt like when I saw your name on a screen — Blessing Ikechukwu — 
 
 Those four years without you were the loudest silence I have ever known. I carried what I did everywhere I went. I didn't look for you because I didn't feel I had the right. But I thought about you. Always.
 
-And then came June 19th.
+And then came June 19th at exactly 10:45PM.
 
 You sent "Hello" and I didn't even know it was you. But the moment your name came through — Momo — something that had been held tight inside me for four years just let go. I still can't fully explain that night. I just know I thank God for it every time I think about it. Which is always.
 
