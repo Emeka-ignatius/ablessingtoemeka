@@ -4,6 +4,24 @@ export const CONFIG = {
     yours: "Fusco",
   },
 
+  petNames: [
+    { name: "B",                   imageUrl: "/images/petnames/27928c81bd39ffe7984416f83f2fafcf.jpg" },
+    { name: "Baby",                imageUrl: "/images/petnames/IMG-20251207-WA0024.jpg" },
+    { name: "Momo",                imageUrl: "/images/petnames/IMG-20260517-WA0002.jpg" },
+    { name: "Mine",                imageUrl: "/images/petnames/IMG-20260526-WA0006.jpg" },
+    { name: "My only girl",        imageUrl: "/images/petnames/IMG-20260526-WA0011.jpg" },
+    { name: "My woman",            imageUrl: "/images/petnames/IMG-20260527-WA0042.jpg" },
+    { name: "My wife",             imageUrl: "/images/IMG-20251207-WA0024.jpg" },
+    { name: "My peace",            imageUrl: "/images/IMG-20260507-WA0001.jpg" },
+    { name: "My favourite person", imageUrl: "/images/IMG-20260526-WA0013.jpg" },
+    { name: "Light of the world",  imageUrl: "/images/IMG-20260607-WA0015.jpg" },
+    { name: "My queen",            imageUrl: "/images/petnames/IMG-20250627-WA0063.jpg" },
+    { name: "My lady",             imageUrl: "/images/petnames/IMG-20250627-WA0064.jpg" },
+    { name: "Ugom",                imageUrl: "/images/petnames/IMG-20250930-WA0003.jpg" },
+    { name: "Asa",                 imageUrl: "/images/petnames/IMG-20260302-WA0006.jpg" },
+    { name: "Mummy",               imageUrl: "/images/petnames/IMG-20260517-WA0002.jpg" },
+  ],
+
   // ─── QUIZ ────────────────────────────────────────────────────────────────
   // Questions only she would know — drawn from your real story.
   quiz: [

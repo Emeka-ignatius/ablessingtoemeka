@@ -10,8 +10,10 @@ import { GateScene } from './Gate/GateScene';
 import { RevealScene } from './Reveal/RevealScene';
 import { JourneySceneManager } from './Journey/JourneySceneManager';
 import { LetterScene } from './Letter/LetterScene';
+import { PetNamesScene } from './PetNames';
 import { Button } from '@/components/ui/button';
 import { TypewriterText } from '@/components/ui/TypewriterText';
+import { MUSIC } from '@/constants/music';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,6 +36,20 @@ export default function ExperienceOrchestrator() {
 
   const [hintsShown, setHintsShown] = useState(0);
   const [selectedWrong, setSelectedWrong] = useState<number | null>(null);
+  const [isLetterFinished, setIsLetterFinished] = useState(false);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        audioManager.pauseSong();
+      } else {
+        audioManager.resumeSong();
+      }
+    };
+    
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
 
   useEffect(() => {
     audioManager.init(CONFIG.letter.songUrl);
@@ -97,6 +113,7 @@ export default function ExperienceOrchestrator() {
         {activePhase === 'invitation' && <InvitationScene />}
         {activePhase === 'gate' && <GateScene />}
         {activePhase === 'reveal' && <RevealScene />}
+        {activePhase === 'petnames' && <PetNamesScene />}
         {activePhase === 'journey' && <JourneySceneManager />}
         {activePhase === 'letter' && <LetterScene />}
       </AppCanvas>
@@ -190,13 +207,40 @@ export default function ExperienceOrchestrator() {
                             <p className="font-sans font-bold text-sm uppercase tracking-widest text-space-gold-light mb-10">Let's travel back... 🎞️</p>
                              <Button 
                               variant="primary" 
-                              onClick={() => setPhase('journey')}
+                              onClick={() => {
+                                setPhase('petnames');
+                              }}
                               className="px-8 animate-pulse py-3.5"
                             >
                               I'M READY →
                             </Button>
                           </motion.div>
                         )}
+
+            {activePhase === 'petnames' && (
+              <motion.div 
+                key="petnames"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="flex flex-col items-center justify-between w-full h-full pb-8 pointer-events-none"
+              >
+                <div className="text-center mt-12 md:mt-24 pointer-events-auto">
+                  <h2 className="font-serif italic text-3xl md:text-4xl mb-2 text-[#7E3E5E]">"All the names I have for you"</h2>
+                  <p className="font-sans text-sm tracking-widest uppercase text-space-gold-light">— because one was never enough</p>
+                </div>
+                
+                <div className="mt-auto pointer-events-auto">
+                  <Button 
+                    onClick={() => {
+                      setPhase('journey');
+                    }}
+                  >
+                    Walk with me →
+                  </Button>
+                </div>
+              </motion.div>
+            )}
 
             {activePhase === 'journey' && (
               <motion.div 
@@ -233,21 +277,39 @@ export default function ExperienceOrchestrator() {
             )}
 
            {activePhase === 'letter' && (
-                         <motion.div 
-                           key="letter"
-                           initial={{ opacity: 0, y: 20 }}
-                           animate={{ opacity: 1, y: 0 }}
-                           exit={{ opacity: 0 }}
-                           className="bg-space-paper border border-space-sepia/20 rounded-2xl p-8 max-w-xl max-h-[70vh] overflow-y-auto shadow-2xl pointer-events-auto"
-                           data-letter-scroll
-                         >
-                           <TypewriterText
-                             text={CONFIG.letter.body}
-                             speed={1}
-                             interval={45}
-                             className="font-serif text-space-sepia whitespace-pre-line leading-relaxed text-base italic"
-                           />
-                         </motion.div>
+                           <motion.div 
+                             key="letter"
+                             initial={{ opacity: 0, y: 20 }}
+                             animate={{ opacity: 1, y: 0 }}
+                             exit={{ opacity: 0 }}
+                             className="bg-space-paper border border-space-sepia/20 rounded-2xl p-8 max-w-xl max-h-[70vh] overflow-y-auto shadow-2xl pointer-events-auto flex flex-col"
+                             data-letter-scroll
+                           >
+                             <TypewriterText
+                               text={CONFIG.letter.body}
+                               speed={1}
+                               interval={45}
+                               className="font-serif text-space-sepia whitespace-pre-line leading-relaxed text-base italic"
+                               onComplete={() => setIsLetterFinished(true)}
+                             />
+                             {isLetterFinished && (
+                               <motion.div 
+                                 initial={{ opacity: 0, marginTop: 0 }}
+                                 animate={{ opacity: 1, marginTop: 32 }}
+                                 className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                               >
+                                 <Button variant="outline" onClick={() => setPhase('journey')}>
+                                   ← Return to Journey
+                                 </Button>
+                                 <Button onClick={(e) => {
+                                   const parent = (e.target as HTMLElement).closest('[data-letter-scroll]');
+                                   if (parent) parent.scrollTo({ top: 0, behavior: 'smooth' });
+                                 }}>
+                                   Read Again
+                                 </Button>
+                               </motion.div>
+                             )}
+                           </motion.div>
                        )}
           </AnimatePresence>
         </div>

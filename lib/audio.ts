@@ -56,10 +56,63 @@ class AudioManager {
     }
   }
 
+  public pauseSong() {
+    if (this.song && this.song.playing()) {
+      this.song.pause();
+    }
+  }
+
+  public resumeSong() {
+    if (this.song && !this.song.playing()) {
+      this.song.play();
+    }
+  }
+
   public setMute(muted: boolean) {
     this.muted = muted;
     if (!this.song) return;
     this.song.mute(muted);
+  }
+
+  public fadeOutAndStop(duration = 2000) {
+    if (this.song) {
+      const oldSong = this.song;
+      oldSong.fade(oldSong.volume() as number, 0, duration);
+      setTimeout(() => {
+        oldSong.stop();
+        oldSong.unload();
+      }, duration);
+      this.song = null;
+    }
+  }
+
+  public crossfadeTo(newSongUrl: string, duration = 2000) {
+    if (this.song) {
+      const oldSong = this.song;
+      oldSong.fade(oldSong.volume() as number, 0, duration);
+      setTimeout(() => {
+        oldSong.stop();
+        oldSong.unload();
+      }, duration);
+    }
+
+    this.song = new Howl({
+      src: [newSongUrl],
+      html5: false,
+      loop: true,
+      volume: 0,
+      mute: this.muted,
+      onloaderror: (id, err) => {
+        console.error("AudioManager load error during crossfade:", err, "for url:", newSongUrl);
+      },
+      onplayerror: (id, err) => {
+        console.error("AudioManager play error during crossfade:", err);
+      }
+    });
+    
+    this.song.play();
+    this.song.fade(0, 0.8, duration);
+    this.initialized = true;
   }
 
   public getVolume(): number {

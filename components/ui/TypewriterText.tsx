@@ -8,13 +8,15 @@ interface TypewriterTextProps {
   /** Milliseconds between ticks */
   interval?: number;
   className?: string;
+  onComplete?: () => void;
 }
 
 export const TypewriterText = ({ 
   text, 
   speed = 1, 
   interval = 45, 
-  className = '' 
+  className = '',
+  onComplete
 }: TypewriterTextProps) => {
   const [visibleLength, setVisibleLength] = useState(0);
   const containerRef = useRef<HTMLParagraphElement>(null);
@@ -25,7 +27,10 @@ export const TypewriterText = ({
   }, [text]);
 
   useEffect(() => {
-    if (visibleLength >= text.length) return;
+    if (visibleLength >= text.length && text.length > 0) {
+      onComplete?.();
+      return;
+    }
 
     const timer = setInterval(() => {
       setVisibleLength((prev) => {
