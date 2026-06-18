@@ -5,11 +5,13 @@ import { CONFIG } from '@/constants/content';
 import { audioManager } from '@/lib/audio';
 import { AppCanvas } from '@/components/canvas/AppCanvas';
 import { InvitationScene } from './Invitation/InvitationScene';
+
 import { GateScene } from './Gate/GateScene';
 import { RevealScene } from './Reveal/RevealScene';
 import { JourneySceneManager } from './Journey/JourneySceneManager';
 import { LetterScene } from './Letter/LetterScene';
 import { Button } from '@/components/ui/button';
+import { TypewriterText } from '@/components/ui/TypewriterText';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -25,7 +27,9 @@ export default function ExperienceOrchestrator() {
     nextScene,
     prevScene,
     unlockedNavigation,
-    jumpToScene
+    jumpToScene,
+    isMuted,
+    setMuted
   } = usePhaseStore();
 
   const [hintsShown, setHintsShown] = useState(0);
@@ -38,6 +42,7 @@ export default function ExperienceOrchestrator() {
   const handleUserStart = () => {
     setUserInteracted();
     setPhase('invitation');
+    audioManager.playSong();
   };
 
   const handleQuizOption = (optIndex: number) => {
@@ -59,6 +64,34 @@ export default function ExperienceOrchestrator() {
 
   return (
     <main className="relative w-screen h-screen overflow-hidden select-none bg-space-black">
+      {/* Blurred Cover Image background with cinematic zoom for loading screen */}
+      <AnimatePresence>
+        {activePhase === 'loading' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+            className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none"
+          >
+            <motion.img 
+              initial={{ scale: 1.15, opacity: 0 }}
+              animate={{ scale: 1.05, opacity: 0.7 }}
+              exit={{ opacity: 0 }}
+              transition={{ 
+                opacity: { duration: 1.5 },
+                scale: { duration: 15, ease: "easeOut" }
+              }}
+              src="/images/IMG-20251005-WA0040.jpg" 
+              alt="Blurred memory background" 
+              className="w-full h-full object-cover blur-[20px]"
+            />
+            {/* Soft gradient vignette to merge with current design palette */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-space-black/80 via-[#160b24]/30 to-space-black/80" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* 3D Canvas Background */}
       <AppCanvas>
         {activePhase === 'invitation' && <InvitationScene />}
@@ -81,7 +114,7 @@ export default function ExperienceOrchestrator() {
         </div>
 
         {/* Interactive Screen Center Content */}
-        <div className="flex-1 flex items-center justify-center pointer-events-auto">
+        <div className="flex-1 flex items-center justify-center pointer-events-none">
           <AnimatePresence mode="wait">
             {activePhase === 'loading' && (
               <motion.div 
@@ -89,7 +122,7 @@ export default function ExperienceOrchestrator() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center"
+                className="text-center pointer-events-auto"
               >
                 <p className="font-serif italic text-xl text-space-gold-light mb-6">Momo's Anniversary Journey</p>
                 <Button onClick={handleUserStart}>Enter the stars</Button>
@@ -102,7 +135,7 @@ export default function ExperienceOrchestrator() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
-                className="text-center max-w-md"
+                className="text-center max-w-md pointer-events-auto"
               >
                 <h2 className="font-serif italic text-4xl mb-4 tracking-wider text-space-rose">Momo</h2>
                 <p className="text-sm font-sans tracking-widest uppercase text-space-gold-light mb-8">Someone left something here for you.</p>
@@ -116,7 +149,7 @@ export default function ExperienceOrchestrator() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-space-black/80 border border-space-gold/30 rounded-2xl p-8 max-w-md w-full backdrop-blur-md shadow-2xl"
+                className="bg-space-black/80 border border-space-gold/30 rounded-2xl p-8 max-w-md w-full backdrop-blur-md shadow-2xl pointer-events-auto"
               >
                 <p className="text-xs uppercase tracking-widest text-space-gold mb-2">Question {currentQuestionIndex + 1} of {CONFIG.quiz.length}</p>
                 <h3 className="font-serif text-lg text-space-paper mb-6">{CONFIG.quiz[currentQuestionIndex].question}</h3>
@@ -144,18 +177,25 @@ export default function ExperienceOrchestrator() {
             )}
 
             {activePhase === 'reveal' && (
-              <motion.div 
-                key="reveal"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-center max-w-lg"
-              >
-                <h2 className="font-serif italic text-3xl md:text-5xl text-space-rose mb-4 animate-pulse">Happy Anniversary</h2>
-                <p className="font-sans text-sm uppercase tracking-widest text-space-gold-light mb-10">Momo.</p>
-                <Button onClick={() => setPhase('journey')}>Let's travel back... 🎞️</Button>
-              </motion.div>
-            )}
+                          <motion.div 
+                            key="reveal"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="text-center max-w-lg pointer-events-auto"
+                          >
+                            <h2 className="font-serif italic text-4xl md:text-5xl text-space-rose mb-4 ">Happy Anniversary</h2>
+                            <p className="font-sans text-xl uppercase tracking-widest text-space-gold-light mb-10">Momo.</p>
+                            <p className="font-sans text-sm uppercase tracking-widest text-space-gold-light mb-10">Let's travel back... 🎞️</p>
+                             <Button 
+                              variant="primary" 
+                              onClick={() => setPhase('journey')}
+                              className="px-8 animate-pulse py-3.5"
+                            >
+                              I'M READY →
+                            </Button>
+                          </motion.div>
+                        )}
 
             {activePhase === 'journey' && (
               <motion.div 
@@ -163,16 +203,20 @@ export default function ExperienceOrchestrator() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="flex flex-col items-center justify-between w-full h-full max-h-[80vh]"
+                className="flex flex-col justify-between w-full h-full max-h-[80vh] md:max-h-[85vh] pointer-events-none"
               >
-                <div className="bg-space-black/70 border border-white/5 rounded-2xl p-6 max-w-xl text-center backdrop-blur-sm">
-                  <p className="text-xs uppercase tracking-widest text-space-gold mb-1">{CONFIG.memories[currentSceneIndex].label}</p>
-                  <p className="text-[10px] text-white/50 tracking-wider mb-3">{CONFIG.memories[currentSceneIndex].date}</p>
-                  <h3 className="font-serif italic text-2xl text-space-paper mb-4">{CONFIG.memories[currentSceneIndex].title}</h3>
-                  <p className="text-sm leading-relaxed text-space-paper/80 font-serif">{CONFIG.memories[currentSceneIndex].story}</p>
+                {/* Story Card — right-aligned on desktop */}
+                <div className="flex-1 flex flex-col justify-center items-center md:items-end w-full md:pr-12">
+                  <div className="bg-space-black/85 border border-white/10 rounded-2xl p-6 md:p-8 max-w-md w-full backdrop-blur-md shadow-2xl pointer-events-auto text-left">
+                    <p className="text-xs uppercase tracking-widest text-space-gold mb-1">{CONFIG.memories[currentSceneIndex].label}</p>
+                    <p className="text-[10px] text-white/50 tracking-wider mb-4">{CONFIG.memories[currentSceneIndex].date}</p>
+                    <h3 className="font-serif italic text-2xl text-space-paper mb-4">{CONFIG.memories[currentSceneIndex].title}</h3>
+                    <p className="text-sm leading-relaxed text-space-paper/80 font-serif whitespace-pre-line">{CONFIG.memories[currentSceneIndex].story}</p>
+                  </div>
                 </div>
 
-                <div className="flex gap-4 mt-8 pointer-events-auto">
+                {/* Navigation Buttons — bottom-right on desktop */}
+                <div className="flex gap-4 mt-6 pointer-events-auto w-full justify-center md:justify-end md:pr-12 pb-4">
                   {currentSceneIndex > 0 && (
                     <Button variant="outline" onClick={prevScene}>Back</Button>
                   )}
@@ -185,19 +229,23 @@ export default function ExperienceOrchestrator() {
               </motion.div>
             )}
 
-            {activePhase === 'letter' && (
-              <motion.div 
-                key="letter"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="bg-space-paper border border-space-sepia/20 rounded-2xl p-8 max-w-xl max-h-[70vh] overflow-y-auto shadow-2xl pointer-events-auto"
-              >
-                <p className="font-serif text-space-sepia whitespace-pre-line leading-relaxed text-base italic">
-                  {CONFIG.letter.body}
-                </p>
-              </motion.div>
-            )}
+           {activePhase === 'letter' && (
+                         <motion.div 
+                           key="letter"
+                           initial={{ opacity: 0, y: 20 }}
+                           animate={{ opacity: 1, y: 0 }}
+                           exit={{ opacity: 0 }}
+                           className="bg-space-paper border border-space-sepia/20 rounded-2xl p-8 max-w-xl max-h-[70vh] overflow-y-auto shadow-2xl pointer-events-auto"
+                           data-letter-scroll
+                         >
+                           <TypewriterText
+                             text={CONFIG.letter.body}
+                             speed={1}
+                             interval={45}
+                             className="font-serif text-space-sepia whitespace-pre-line leading-relaxed text-base italic"
+                           />
+                         </motion.div>
+                       )}
           </AnimatePresence>
         </div>
 
@@ -238,12 +286,13 @@ export default function ExperienceOrchestrator() {
           {userInteracted && (
             <button
               onClick={() => {
-                const muted = !audioManager.getVolume();
-                audioManager.setMute(!muted);
+                const nextMuted = !isMuted;
+                setMuted(nextMuted);
+                audioManager.setMute(nextMuted);
               }}
               className="pointer-events-auto w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-space-black/40 hover:bg-white/5 transition-all text-lg cursor-pointer"
             >
-              🔊
+              {isMuted ? '🔇' : '🔊'}
             </button>
           )}
         </div>

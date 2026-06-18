@@ -31,10 +31,19 @@ vi.mock('howler', () => {
       this.playingState = false;
       return this;
     }
+    unload() {
+      return this;
+    }
   }
 
   return {
-    Howl: MockHowl
+    Howl: MockHowl,
+    Howler: {
+      ctx: {
+        state: 'suspended',
+        resume: () => Promise.resolve()
+      }
+    }
   };
 });
 
@@ -44,13 +53,13 @@ describe('AudioManager', () => {
   });
 
   it('should initialize and play song with a fade-in', () => {
-    audioManager.init('/dummy.mp3');
+    audioManager.init('/audio/Savy_Henry_-_The_Best_Part_Vistanaij.com_.ng_.mp3');
     audioManager.playSong();
     expect(audioManager.getVolume()).toBe(0.8);
   });
 
   it('should handle muting properly', () => {
-    audioManager.init('/dummy.mp3');
+    audioManager.init('/audio/Savy_Henry_-_The_Best_Part_Vistanaij.com_.ng_.mp3');
     audioManager.setMute(true);
     // Mock checks correct invocation
     expect(audioManager).toBeDefined();
