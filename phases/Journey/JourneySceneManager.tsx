@@ -18,12 +18,14 @@ export const JourneySceneManager = () => {
       {CONFIG.memories.map((mem, index) => (
         <group key={index} position={[450 + index * 125, 0, 0]}>
           <StarField count={300} color={index % 2 === 0 ? "#B5768E" : "#C9A065"} />
-          <group position={[positionX, positionY, 0]} scale={[scale, scale, scale]}>
-            <MemoryFrame 
-              imageUrl={mem.imageUrl} 
-              imageUrls={'imageUrls' in mem ? (mem.imageUrls as string[]) : undefined} 
-            />
-          </group>
+          {!isMobile && (
+            <group position={[positionX, positionY, 0]} scale={[scale, scale, scale]}>
+              <MemoryFrame 
+                imageUrl={mem.imageUrl} 
+                imageUrls={'imageUrls' in mem ? (mem.imageUrls as string[]) : undefined} 
+              />
+            </group>
+          )}
         </group>
       ))}
     </group>

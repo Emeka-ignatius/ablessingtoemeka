@@ -253,13 +253,22 @@ export default function ExperienceOrchestrator() {
               >
                 {/* Story Card — mobile: bottom, transparent, centered | desktop: right, dark box, left-aligned */}
                 <div className="flex-1 flex flex-col justify-end md:justify-center items-center md:items-end w-full md:pr-12 pb-4 md:pb-0">
-                  <div className="bg-transparent md:bg-space-black/85 border-none md:border-solid md:border-white/10 md:rounded-2xl p-6 md:p-8 max-w-md w-full md:backdrop-blur-md md:shadow-2xl pointer-events-auto text-center md:text-left mt-auto md:mt-0">
-                    <p className="hidden md:block text-xs uppercase tracking-widest text-space-gold mb-1">{CONFIG.memories[currentSceneIndex].label}</p>
-                    <p className="hidden md:block text-[10px] text-white/50 tracking-wider mb-4">{CONFIG.memories[currentSceneIndex].date}</p>
+                  <div className="bg-[#080410]/85 md:bg-space-black/85 border-none md:border-solid md:border-white/10 rounded-xl md:rounded-2xl max-w-md w-full backdrop-blur-[6px] md:backdrop-blur-md shadow-lg md:shadow-2xl pointer-events-auto text-center md:text-left mt-auto md:mt-0 overflow-hidden flex flex-col">
                     
-                    <h3 className="font-serif text-3xl md:text-2xl font-bold md:italic md:font-normal text-space-gold md:text-space-paper mb-4">{CONFIG.memories[currentSceneIndex].title}</h3>
-                    
-                    <p className="text-base md:text-sm leading-relaxed text-space-paper/80 font-serif whitespace-pre-line overflow-y-auto max-h-[35vh] md:max-h-none">{CONFIG.memories[currentSceneIndex].story}</p>
+                    {/* Mobile Image Header */}
+                    <div className="md:hidden relative w-full h-[220px] shrink-0">
+                      <img src={CONFIG.memories[currentSceneIndex].imageUrl} className="w-full h-full object-cover" alt="Memory" />
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#080410]/30 to-[#080410]/85" />
+                    </div>
+
+                    <div className="p-6 md:p-8 pt-0 md:pt-8 flex flex-col flex-1 min-h-0">
+                      <p className="hidden md:block text-xs uppercase tracking-widest text-space-gold mb-1">{CONFIG.memories[currentSceneIndex].label}</p>
+                      <p className="hidden md:block text-[10px] text-white/50 tracking-wider mb-4">{CONFIG.memories[currentSceneIndex].date}</p>
+                      
+                      <h3 className="font-serif text-3xl md:text-2xl font-bold md:italic md:font-normal text-space-gold md:text-space-paper mb-4">{CONFIG.memories[currentSceneIndex].title}</h3>
+                      
+                      <p className="text-base md:text-sm leading-relaxed text-space-paper/80 font-serif whitespace-pre-line overflow-y-auto max-h-[35vh] md:max-h-none">{CONFIG.memories[currentSceneIndex].story}</p>
+                    </div>
                   </div>
                 </div>
 
