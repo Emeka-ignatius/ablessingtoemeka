@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type Phase = 'loading' | 'invitation' | 'gate' | 'reveal' | 'petnames' | 'journey' | 'letter';
+export type Phase = 'loading' | 'invitation' | 'gate' | 'reveal' | 'petnames' | 'journey' | 'letter' | 'epilogue';
 
 interface PhaseState {
   activePhase: Phase;

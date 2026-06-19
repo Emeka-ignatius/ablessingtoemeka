@@ -72,7 +72,8 @@ export const CONFIG = {
       imageUrls: [
   "/images/IMG-20260607-WA0015.jpg",
   "/images/IMG-20250627-WA0069.jpg"
-],
+      ],
+      
       sceneTheme: "night" as const,
     },
     {
@@ -135,5 +136,9 @@ I love you. So much. Always.
 
 Daddy 💕`,
     songUrl: "/audio/Savy_Henry_-_The_Best_Part_Vistanaij.com_.ng_.mp3",
+  },
+
+  epilogue: {
+    videoUrl: "/videos/anniversary.mp4",
   },
 };

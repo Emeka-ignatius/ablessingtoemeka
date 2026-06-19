@@ -10,6 +10,7 @@ import { GateScene } from './Gate/GateScene';
 import { RevealScene } from './Reveal/RevealScene';
 import { JourneySceneManager } from './Journey/JourneySceneManager';
 import { LetterScene } from './Letter/LetterScene';
+import { EpilogueScene } from './Epilogue';
 import { PetNamesScene } from './PetNames';
 import { Button } from '@/components/ui/button';
 import { TypewriterText } from '@/components/ui/TypewriterText';
@@ -257,7 +258,11 @@ export default function ExperienceOrchestrator() {
                     
                     {/* Mobile Image Header */}
                     <div className="md:hidden relative w-full h-[220px] shrink-0">
-                      <img src={CONFIG.memories[currentSceneIndex].imageUrl} className="w-full h-full object-cover" alt="Memory" />
+                      {('videoUrl' in CONFIG.memories[currentSceneIndex]) ? (
+                        <video src={(CONFIG.memories[currentSceneIndex] as any).videoUrl} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+                      ) : (
+                        <img src={CONFIG.memories[currentSceneIndex].imageUrl} className="w-full h-full object-cover" alt="Memory" />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#080410]/30 to-[#080410]/85" />
                     </div>
 
@@ -306,21 +311,19 @@ export default function ExperienceOrchestrator() {
                                <motion.div 
                                  initial={{ opacity: 0, marginTop: 0 }}
                                  animate={{ opacity: 1, marginTop: 32 }}
-                                 className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                                 className="flex flex-col justify-center items-center"
                                >
-                                 <Button variant="outline" onClick={() => setPhase('journey')}>
-                                   ← Return to Journey
-                                 </Button>
-                                 <Button onClick={(e) => {
-                                   const parent = (e.target as HTMLElement).closest('[data-letter-scroll]');
-                                   if (parent) parent.scrollTo({ top: 0, behavior: 'smooth' });
-                                 }}>
-                                   Read Again
+                                 <Button 
+                                   onClick={() => setPhase('epilogue')}
+                                   className="bg-pink-500/10 border-white/30 hover:bg-white/20 transition-all duration-300 font-serif italic text-lg tracking-wide px-8 py-3 rounded-full animate-pulse shadow-lg backdrop-blur-sm"
+                                 >
+                                   One last thing...
                                  </Button>
                                </motion.div>
                              )}
                            </motion.div>
                        )}
+           {activePhase === 'epilogue' && <EpilogueScene key="epilogue" />}
           </AnimatePresence>
         </div>
 

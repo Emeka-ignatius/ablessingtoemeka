@@ -23,6 +23,7 @@ export const JourneySceneManager = () => {
               <MemoryFrame 
                 imageUrl={mem.imageUrl} 
                 imageUrls={'imageUrls' in mem ? (mem.imageUrls as string[]) : undefined} 
+                videoUrl={(mem as any).videoUrl}
               />
             </group>
           )}

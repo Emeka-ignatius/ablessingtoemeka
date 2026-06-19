@@ -1,27 +1,32 @@
 'use client';
 import { useState, useRef, useMemo } from 'react';
-import { Float, useTexture, Text } from '@react-three/drei';
+import { Float, useTexture, Text, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 // ─── BASE POLAROID CARD ───────────────────────────────────────────────────
 export const PolaroidCard = ({ 
   imageUrl, 
+  videoUrl,
   targetPos, 
   targetRot, 
   onClick 
 }: { 
-  imageUrl: string;
+  imageUrl?: string;
+  videoUrl?: string;
   targetPos: [number, number, number];
   targetRot: [number, number, number];
   onClick?: () => void;
 }) => {
   const groupRef = useRef<THREE.Group>(null);
-  const texture = useTexture(imageUrl);
+  
+  // Use a fallback 1x1 transparent pixel if no imageUrl
+  const fallbackImg = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+  const texture = useTexture(imageUrl || fallbackImg);
 
   // Fix stretching: "cover" the photo area maintaining aspect ratio
   useMemo(() => {
-    if (texture.image) {
+    if (texture.image && imageUrl) {
       const img = texture.image as any;
       const imgAspect = img.width / img.height;
       const planeAspect = 1; // square photo area (3.8 x 3.8)
@@ -39,7 +44,7 @@ export const PolaroidCard = ({
         texture.offset.set(0, (1 - imgAspect / planeAspect) / 2);
       }
     }
-  }, [texture]);
+  }, [texture, imageUrl]);
 
   useFrame(() => {
     if (groupRef.current) {
@@ -77,7 +82,24 @@ export const PolaroidCard = ({
       {/* Photo Inner Screen */}
       <mesh position={[0, 1.0, 0.05]}>
         <planeGeometry args={[3.8, 3.8]} />
-        <meshStandardMaterial map={texture} roughness={0.5} />
+        {videoUrl ? (
+          <Html transform position={[0, 0, 0.01]} zIndexRange={[100, 0]}>
+            <div style={{ width: '380px', height: '380px', borderRadius: '4px', overflow: 'hidden', background: '#000' }}>
+              <video 
+                src={videoUrl} 
+                autoPlay 
+                muted 
+                loop 
+                playsInline 
+                style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'sepia(0.3) contrast(1.1)' }} 
+              />
+            </div>
+          </Html>
+        ) : imageUrl ? (
+          <meshStandardMaterial map={texture} roughness={0.5} />
+        ) : (
+          <meshStandardMaterial color="#222" roughness={0.8} />
+        )}
       </mesh>
     </group>
   );
@@ -141,10 +163,12 @@ export const MemoryStack = ({ imageUrls }: { imageUrls: string[] }) => {
 // ─── EXPORTED MAIN CONTAINER ──────────────────────────────────────────────
 export const MemoryFrame = ({ 
   imageUrl, 
-  imageUrls 
+  imageUrls,
+  videoUrl
 }: { 
-  imageUrl: string; 
-  imageUrls?: string[] 
+  imageUrl?: string; 
+  imageUrls?: string[];
+  videoUrl?: string;
 }) => {
   const isStack = imageUrls && imageUrls.length > 1;
 
@@ -155,6 +179,7 @@ export const MemoryFrame = ({
       ) : (
         <PolaroidCard 
           imageUrl={imageUrl} 
+          videoUrl={videoUrl}
           targetPos={[0, 0, 0.2]} 
           targetRot={[0, 0, 0]} 
         />
