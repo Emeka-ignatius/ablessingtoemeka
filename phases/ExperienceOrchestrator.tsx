@@ -250,7 +250,7 @@ export default function ExperienceOrchestrator() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="flex flex-col justify-between w-full h-full max-h-[80vh] md:max-h-[85vh] pointer-events-none"
+                className="flex flex-col justify-between w-full h-full max-h-[85dvh] md:max-h-[85vh] pointer-events-none"
               >
                 {/* Story Card — mobile: bottom, transparent, centered | desktop: right, dark box, left-aligned */}
                 <div className="flex-1 flex flex-col justify-end md:justify-center items-center md:items-end w-full md:pr-12 pb-4 md:pb-0">
@@ -272,13 +272,25 @@ export default function ExperienceOrchestrator() {
                       
                       <h3 className="font-serif text-3xl md:text-2xl font-bold md:italic md:font-normal text-space-gold md:text-space-paper mb-4">{CONFIG.memories[currentSceneIndex].title}</h3>
                       
-                      <p className="text-base md:text-sm leading-relaxed text-space-paper/80 font-serif whitespace-pre-line overflow-y-auto max-h-[35vh] md:max-h-none">{CONFIG.memories[currentSceneIndex].story}</p>
+                      <p className="text-base md:text-sm leading-relaxed text-space-paper/80 font-serif whitespace-pre-line overflow-y-auto flex-1 min-h-[15vh] max-h-[30vh] md:max-h-none pr-2 pb-4 md:pb-0">{CONFIG.memories[currentSceneIndex].story}</p>
+                      
+                      {/* Mobile In-Card Navigation Buttons */}
+                      <div className="md:hidden flex gap-3 mt-4 w-full justify-between shrink-0">
+                        {currentSceneIndex > 0 && (
+                          <Button variant="outline" onClick={prevScene} className="flex-1 bg-white/5 border-white/20 text-white hover:bg-white/10 hover:text-white">Back</Button>
+                        )}
+                        {currentSceneIndex < CONFIG.memories.length - 1 ? (
+                          <Button onClick={nextScene} className="flex-1 bg-space-gold text-space-black border-none hover:bg-space-gold-light">Next Moment</Button>
+                        ) : (
+                          <Button onClick={() => setPhase('letter')} className="flex-1 bg-space-rose text-white border-none hover:bg-pink-400">Read Letter</Button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Navigation Buttons */}
-                <div className="flex gap-4 mt-2 md:mt-6 pointer-events-auto w-full justify-center md:justify-end md:pr-12 pb-8 md:pb-4">
+                {/* Desktop Navigation Buttons */}
+                <div className="hidden md:flex gap-4 mt-6 pointer-events-auto w-full justify-end pr-12 pb-4">
                   {currentSceneIndex > 0 && (
                     <Button variant="outline" onClick={prevScene}>Back</Button>
                   )}
